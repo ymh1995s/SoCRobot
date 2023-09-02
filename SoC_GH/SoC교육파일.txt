@@ -1,0 +1,33 @@
+C:\cygwin\home\aksuv\AMAZON2_robot_v1.13.4\tools 
+download_usb_nand  커널이랑 디스크가 보드 쪽에 자동으로 올라감 리눅스 꺠져서 부팅안될때 사용 
+download_usb_image 맨처음 보드켰을때 나오는 이미지 바꾸는거
+
+make 파일안
+
+TRG : 최종파일 이름
+
+
+보드에 파일 올리려면 컴파일된 파일을 tools폴더에 옮김
+
+보드 연결하고 putty킴 -> 로그인 비밀번호 root -> cd /mnt/f0 로 이동 (플래시 메모리 영역 다른데는 sram(껏다키면 지워짐))
+-> usb_download 입력 ( usb 만치고 Tab누르면 다쳐짐, USB BULK Download Program (Ver 1.04) 라고 뜨면 다운로드 준비완료)
+-> tools폴더에 "RemoteManCLI" 실행 -> target usb 입력(실패하면 usb다시 뺏다 끼고 putty부터 다시 시작, 장치관리자에서 adchips USB Device 확인)
+-> rfw /mnt/f0/robot hello (rfw(명령어) - 보드에 저장시킬 장소(마지막은 보드에 저장될 파일 이름) - 저장할 파일)
+-> run 0 입력 (종료 꼭 해야함) -> "RemoteManCLI"종료 해도 됨 -> putty로 돌아가서 ls 쳐서 다운로드 됐는지 확인
+-> chmod 777 robot 입력 (chmod(모드권한 주는거), 777 (권한을 어디까지 줄건지), robot (파일이름))-> ls치면 robot 파일 색이 초록색으로 변해있음
+->./robot 입력 (./(실행), robot(실행시킬파일이름))
+
+보드를 키자마자 나오는 화면은 fpga를 거치지않은 카메라 화면
+graphic.tect에 demo에 나오는 작은 화면은 fpga 거친거임
+
+로봇을 키자마자 실행되는 파일 만들기
+vi user_init 입력
+
+#!/bin/sh
+cd /mnt/f0
+./hello	입력 
+
+Esc 누르고(편집모드로) :누른다음 wq!입력하면 저장됨
+그다음 chmod 777 user_init 으로 권한줌 -> 보드껏다키면 자동으로 hello 실행됨
+
+us
